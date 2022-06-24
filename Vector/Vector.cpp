@@ -37,14 +37,32 @@ class Vector{
         }
         return -1; // return -1 if not found 
     }
+    int get_front(){
+        return arr[0]; // return first element of vector
+    }
+    int get_back(){
+        return arr[size-1]; // return last element of vector
+    }
+    int append_back(int value){ // this called push_back in built in vector 
+        int *temp = new int[size+1]{}; // create an array with a new size
+        for (int i = 0; i < size - 1;i++){
+            temp[i] = arr[i]; // copy old array to new temp array 
+        }
+        temp[size++] = value; // assign last element of temp array to value
+        arr = temp; // assign new values to array 
+        delete[] temp; // delete useless data 
+    }
 };
 int main(){
-    Vector v(10); // initializing vector with size 10 and all indices has 0 value
-    for (int i = 0; i < 10;i++){
+    int n = 4;
+    Vector v(n); // initializing vector with size 4 and all indices has 0 value
+    for (int i = 0; i < n;i++){
         v.set(i, i); // use set function to set values form 0 -> 9 to array
         // set index of i with value i 
     }
     v.print(); // use print function that we created above
     cout << v.find(5) << " " << v.find(-10) << endl; // use find function to find value in vector
     // find value 5 will return 5 position since it inserted at 5 position and -10 will return -1 since it is not inserted in vector
+    v.append_back(50);
+    v.print();
 } 
