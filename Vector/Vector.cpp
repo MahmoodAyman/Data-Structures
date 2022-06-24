@@ -4,8 +4,11 @@ class Vector{
     private:
         int *arr = nullptr; 
         // initial array by default is nullptr
-        int size;
+        int size {0};
          // size with initial value 0
+        int capacity{}; 
+        // capacity for making push_back fast 
+
     public:
     Vector (int size): 
     // constractor take variable size and initialize size with passed size 
@@ -13,7 +16,8 @@ class Vector{
             if(size<0)
              // condition to handle if someting wierd happend like intializing vector with size less than 0! make it one 
                 size = 1;
-            arr = new int[size]{};
+            capacity = size + 10;
+            arr = new int[capacity]{};
              // creating internal array with size of passed size
         }
     ~Vector(){ 
@@ -75,6 +79,28 @@ class Vector{
         delete[] temp; 
         // delete useless data 
     }
+    void expand_capacity(){ 
+        // function will do our old push_back code -> append_back without adding value just expand size
+        capacity *= 2;
+        int *temp = new int[capacity]{}; 
+        // create an array with a new size
+        for (int i = 0; i < size;i++){
+            temp[i] = arr[i]; 
+            // copy old array to new temp array 
+        }
+        swap(arr, temp);
+        // assign new values to array 
+        delete[] temp; 
+        // delete useless data 
+    }
+    // function with handling the time problem
+        void push_back(int value){
+        // emplace back is more faster than append as you see 
+        if (size==capacity){
+            expand_capacity();// function to multiply size by 2 
+        }
+        arr[size++] = value;
+    }
 };
 int main(){
     int n = 4;
@@ -85,10 +111,11 @@ int main(){
         // use set function to set values form 0 -> 9 to array
         // set index of i with value i 
     }
-    v.print(); 
+    // v.print(); 
     // use print function that we created above
-    cout << v.find(5) << " " << v.find(-10) << endl;
+    // cout << v.find(5) << " " << v.find(-10) << endl;
     // find value 5 will return 5 position since it inserted at 5 position and -10 will return -1 since it is not inserted in vector
-    v.append_back(50);
+    for (int i = 0; i < 100;i++)
+        v.push_back(50);
     v.print();
 } 
