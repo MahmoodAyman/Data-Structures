@@ -160,12 +160,12 @@ void push_back(int val){
 ### Capacity trick: 
 now the code above is not efficient at all! what about we pushing back 10^6 elements?
 
-which mean the 10 ^ 6 loop will take 5 million steps!
+which mean the 10 ^ 6 loop will take 10 ^ 12 steps!
 
 think about make push_back faster by not creating new array every time we want to append to the vector
 
-what if the user ask for a vector with capacity of 10 we reserved array of size 3000?  
-sound good right?
+### what if the user ask for a vector with capacity of 10 we reserved array of size 3000?  
+### sound good right?
 
 but after 2990 steps the array will be full again!
 
@@ -175,13 +175,41 @@ when we reach for 6000 steps we will have to resize the array to 2 * 6000 = **12
 
 now one value will take linear time but all of the other values will pushed in **2** steps only 
 
-for that we need two sizes the real size and the capacity! 
+for that we need two sizes the real size (the user thinke he has) and the capacity(real size)! 
     
 ``` cpp
+class Vector{
+private:
+    int *arr= nullptr;   // initial array by default is nullptr
+    int size=0;   // size with initial value 0
+    int capacity=0;
+public:
+    Vector(int sz):
+        size(sz){
+            if(sz<0)sz=1;
+            capacity=sz+10;
+            arr=new int [capacity]{}; // see we created the array with capacity
+            // not size!
+    }
+    void push_back(int val){
+        if(size==capacity)expand_capacity(); //function that will be called when real size is full
+        arr[size++]=val; // this will work normal cause there is more space
+        // than size actually
+    }
+    void expand_capacity(){ // this will work as the old push_back
+        // but the number of times this function will work is a little
+        capacity*=2;
+        int *temp = new int [capacity]{};
+        for(int i=0;i<size;i++)temp[i]=arr[i];
+        swap(arr,temp);
+        delete []temp;
+    }
+}
 ```
+I hope this is clear enough!
 
 ---
-
+## let's continue with the operations:
 ### Size: 
 return the size of the vector
 
