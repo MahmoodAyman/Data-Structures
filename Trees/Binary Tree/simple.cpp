@@ -1,4 +1,4 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 class BinaryTree
 {
@@ -31,6 +31,34 @@ public:
         if (Right)
             Right->PrintInOrder();
     }
+    void printInOrdere_Iterative()
+    {
+        stack<pair<BinaryTree *, bool>> nodes;
+        nodes.push({this, false});
+        while (!nodes.empty())
+        {
+            BinaryTree *cur = nodes.top().first;
+            bool print = nodes.top().second;
+            nodes.pop();
+            if (print)
+            {
+                cout << cur->data << " ";
+            }
+            else
+            {
+                if (cur->Right)
+                {
+                    nodes.push({cur->Right, false});
+                }
+                nodes.push({cur, true});
+                if (cur->Left)
+                {
+                    nodes.push({cur->Left, false});
+                }
+            }
+        }
+        cout << endl;
+    }
     // print in VLR
     void PrintPreOrder()
     {
@@ -59,7 +87,7 @@ public:
                 {
                     q.push(Cur->Left);
                 }
-                
+
                 if (Cur->Right)
                 {
                     q.push(Cur->Right);
@@ -180,6 +208,22 @@ public:
         return nodes_count == nodes_formula;
     } // shorter but not efficient
 
+    // print boundries
+    void leftBoundry()
+    {
+        BinaryTree *cur = this;
+        cout << cur->data << " ";
+        if (!cur->Left and !cur->Right)
+            return;
+        if (cur->Left)
+        {
+            cur->Left->leftBoundry();
+        }
+        else if (cur->Right)
+        {
+            cur->Right->leftBoundry();
+        }
+    }
     ~BinaryTree()
     {
         clear();
@@ -199,6 +243,7 @@ public:
     }
 };
 
-int main(){
-
+int main()
+{
+    
 }
